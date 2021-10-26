@@ -7,4 +7,5 @@ import java.util.Optional;
 
 @Repository
 public interface NovaPropostaRepository extends CrudRepository<NovaProposta, Long> {
+    Optional<NovaProposta> findByDocumento(String documento);
 }

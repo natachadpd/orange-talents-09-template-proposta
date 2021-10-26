@@ -47,4 +47,5 @@ public class NovaProposta {
     public Long getId() {
         return id;
     }
+
 }
