@@ -1,10 +1,8 @@
 package br.com.zupacademy.natacha.microservicepropostas.proposta;
 
+import br.com.zupacademy.natacha.microservicepropostas.commons.validator.enums.StatusProposta;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
@@ -18,7 +16,8 @@ public class NovaProposta {
     @NotBlank
     private String documento;
 
-    @Email @NotBlank
+    @Email
+    @NotBlank
     private String email;
 
     @NotBlank
@@ -27,15 +26,19 @@ public class NovaProposta {
     @NotBlank
     private String endereco;
 
-    @NotNull @Positive
+    @NotNull
+    @Positive
     private BigDecimal salario;
+
+    @Enumerated(EnumType.STRING)
+    private StatusProposta statusProposta;
 
 
     @Deprecated
     public NovaProposta() {
     }
 
-    public NovaProposta(@NotBlank String documento, @Email @NotBlank String email,@NotBlank String nome,
+    public NovaProposta(@NotBlank String documento, @Email @NotBlank String email, @NotBlank String nome,
                         @NotBlank String endereco, @NotNull @Positive BigDecimal salario) {
         this.documento = documento;
         this.email = email;
@@ -46,6 +49,22 @@ public class NovaProposta {
 
     public Long getId() {
         return id;
+    }
+
+    public String getDocumento() {
+        return documento;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public StatusProposta getStatusProposta() {
+        return statusProposta;
+    }
+
+    public void adicionaStatus(StatusProposta statusProposta) {
+        this.statusProposta = statusProposta;
     }
 
 }

@@ -1,9 +1,17 @@
 package br.com.zupacademy.natacha.microservicepropostas.proposta;
 
+import br.com.zupacademy.natacha.microservicepropostas.commons.validator.enums.StatusProposta;
+import br.com.zupacademy.natacha.microservicepropostas.proposta.analise.AnaliseFinanceiraClient;
+import br.com.zupacademy.natacha.microservicepropostas.proposta.analise.ResultadoAnaliseResponse;
+import br.com.zupacademy.natacha.microservicepropostas.proposta.analise.SolicitacaoAnaliseRequest;
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -19,8 +27,11 @@ public class NovaPropostaController {
     @Autowired
     private NovaPropostaRepository repository;
 
+    @Autowired
+    private AnaliseFinanceiraClient solicitacao;
+
     @PostMapping
-    public ResponseEntity<?> criarProposta(@RequestBody @Valid NovaPropostaRequest request,
+    public ResponseEntity<NovaProposta> criarProposta(@RequestBody @Valid NovaPropostaRequest request,
                                            UriComponentsBuilder uriBuilder) {
 
         Optional<NovaProposta> documento = repository.findByDocumento(request.getDocumento());
@@ -33,9 +44,24 @@ public class NovaPropostaController {
         }
 
         NovaProposta proposta = request.toModel();
+        analiseFinanceira(proposta);
         repository.save(proposta);
+
         URI uri = uriBuilder.path("/propostas/{id}").buildAndExpand(proposta.getId()).toUri();
 
         return ResponseEntity.created(uri).build();
     }
+
+    private void analiseFinanceira(NovaProposta proposta) {
+        try {
+            SolicitacaoAnaliseRequest solicitacaoAnaliseRequest = new SolicitacaoAnaliseRequest(proposta);
+            ResultadoAnaliseResponse response = solicitacao.enviarAnalise(solicitacaoAnaliseRequest);
+            proposta.adicionaStatus(StatusProposta.ELEGIVEL);
+
+        } catch (FeignException.UnprocessableEntity feignException) {
+            proposta.adicionaStatus(StatusProposta.NAO_ELEGIVEL);
+
+        }
+    }
+
 }
