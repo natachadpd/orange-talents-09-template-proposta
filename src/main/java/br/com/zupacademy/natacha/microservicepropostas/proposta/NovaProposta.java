@@ -1,5 +1,6 @@
 package br.com.zupacademy.natacha.microservicepropostas.proposta;
 
+import br.com.zupacademy.natacha.microservicepropostas.cartao.Cartao;
 import br.com.zupacademy.natacha.microservicepropostas.commons.validator.enums.StatusProposta;
 
 import javax.persistence.*;
@@ -32,6 +33,9 @@ public class NovaProposta {
 
     @Enumerated(EnumType.STRING)
     private StatusProposta statusProposta;
+
+    @OneToOne(cascade = CascadeType.MERGE)
+    private Cartao cartao;
 
 
     @Deprecated
@@ -67,4 +71,17 @@ public class NovaProposta {
         this.statusProposta = statusProposta;
     }
 
+    public Cartao getNumeroCartao(){
+        return getNumeroCartao();
+    }
+
+
+
+    public void associaCartao(Cartao cartao) {
+        if(this.statusProposta.equals(StatusProposta.ELEGIVEL)){
+           this.cartao = cartao;
+        }
+
+
+    }
 }
