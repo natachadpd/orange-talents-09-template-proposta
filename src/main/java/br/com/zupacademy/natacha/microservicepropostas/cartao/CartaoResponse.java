@@ -2,27 +2,32 @@ package br.com.zupacademy.natacha.microservicepropostas.cartao;
 
 import br.com.zupacademy.natacha.microservicepropostas.proposta.NovaProposta;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 public class CartaoResponse {
 
-    private String numeroCartao;
+
+
+    private String id;
 
     private LocalDateTime emitidoEm;
 
     private String titular;
 
-    private Long idProposta;
+    private String idProposta;
 
-    public CartaoResponse(String numeroCartao, LocalDateTime emitidoEm, String titular, Long idProposta) {
-        this.numeroCartao = numeroCartao;
+    public CartaoResponse(String id, LocalDateTime emitidoEm,
+                          String titular, String idProposta) {
+        this.id = id;
         this.emitidoEm = emitidoEm;
         this.titular = titular;
         this.idProposta = idProposta;
     }
 
-    public Cartao toModel(NovaProposta proposta)
-    {
-        return new Cartao(this.numeroCartao, this.emitidoEm, this.titular, proposta);
+    public Cartao toModel(NovaProposta proposta) {
+
+        return new Cartao(this.id, this.emitidoEm, this.titular, proposta);
     }
 }

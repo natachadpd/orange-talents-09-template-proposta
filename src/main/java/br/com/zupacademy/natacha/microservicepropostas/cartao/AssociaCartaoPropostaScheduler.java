@@ -20,24 +20,27 @@ public class AssociaCartaoPropostaScheduler {
     private CartaoClient client;
 
 
-    @Scheduled(fixedDelayString = "5000")
+    @Scheduled(fixedRateString = "5000")
     public void associaCartao() {
 
-        List<NovaProposta> propostas = repository
-                .findBySatusAndCartaoId();
+        List<NovaProposta> propostas = repository.findBySatusAndCartaoId();
+
         for (NovaProposta proposta : propostas) {
 
             try {
 
-                CartaoResponse cartaoResponse = client.consultaCartao(proposta.getId());
+                CartaoResponse cartaoResponse = client.consultaCartao(proposta.getId().toString());
                 Cartao cartao = cartaoResponse.toModel(proposta);
 
                 proposta.associaCartao(cartao);
                 repository.save(proposta);
 
             } catch (FeignException ex) {
+                System.out.println(ex.getMessage());
                 ex.getMessage();
             }
+
+
         }
     }
 }

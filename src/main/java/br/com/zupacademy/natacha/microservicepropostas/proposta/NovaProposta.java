@@ -4,7 +4,10 @@ import br.com.zupacademy.natacha.microservicepropostas.cartao.Cartao;
 import br.com.zupacademy.natacha.microservicepropostas.commons.validator.enums.StatusProposta;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 @Entity
@@ -35,12 +38,14 @@ public class NovaProposta {
     private StatusProposta statusProposta;
 
     @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "numero_cartao")
     private Cartao cartao;
 
 
     @Deprecated
     public NovaProposta() {
     }
+
 
     public NovaProposta(@NotBlank String documento, @Email @NotBlank String email, @NotBlank String nome,
                         @NotBlank String endereco, @NotNull @Positive BigDecimal salario) {
@@ -50,6 +55,7 @@ public class NovaProposta {
         this.endereco = endereco;
         this.salario = salario;
     }
+
 
     public Long getId() {
         return id;
@@ -67,21 +73,36 @@ public class NovaProposta {
         return statusProposta;
     }
 
-    public void adicionaStatus(StatusProposta statusProposta) {
-        this.statusProposta = statusProposta;
+    public String getEmail() {
+        return email;
     }
 
-    public Cartao getNumeroCartao(){
-        return getNumeroCartao();
+    public String getEndereco() {
+        return endereco;
     }
 
+    public BigDecimal getSalario() {
+        return salario;
+    }
+
+    public Cartao getCartao() {
+        return cartao;
+    }
+
+
+    public void adicionaStatus(String resultadoSolicitacao) {
+        if (resultadoSolicitacao.equals("SEM_RESTRICAO")) {
+
+            this.statusProposta = StatusProposta.ELEGIVEL;
+        } else {
+            this.statusProposta = StatusProposta.NAO_ELEGIVEL;
+        }
+    }
 
 
     public void associaCartao(Cartao cartao) {
-        if(this.statusProposta.equals(StatusProposta.ELEGIVEL)){
-           this.cartao = cartao;
+        if (this.statusProposta.equals(StatusProposta.ELEGIVEL)) {
+            this.cartao = cartao;
         }
-
-
     }
 }

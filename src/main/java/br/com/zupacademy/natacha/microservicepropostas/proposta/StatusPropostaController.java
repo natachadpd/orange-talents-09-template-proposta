@@ -1,5 +1,6 @@
 package br.com.zupacademy.natacha.microservicepropostas.proposta;
 
+import br.com.zupacademy.natacha.microservicepropostas.exceptions.PropostaNaoEncontradaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,10 +16,8 @@ public class StatusPropostaController {
     private NovaPropostaRepository repository;
 
     @GetMapping("/{id}")
-    public ResponseEntity<NovaProposta> getById(@PathVariable long id){
-        return repository.findById(id)
-                .map(resp -> ResponseEntity.ok(resp))
-                .orElse(ResponseEntity.notFound().build());
+    public NovaProposta getById(@PathVariable long id){
+        return repository.findById(id).orElseThrow(PropostaNaoEncontradaException::new);
     }
 
 }
