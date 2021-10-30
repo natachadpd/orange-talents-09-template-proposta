@@ -58,7 +58,10 @@ public class NovaPropostaController {
 
         } catch (FeignException.UnprocessableEntity feignException) {
             proposta.adicionaStatus("COM_RESTRICAO");
-
+        }
+        catch (FeignException ex) {
+            System.out.println(ex.getMessage());
+            ex.getMessage();
         }
     }
 
