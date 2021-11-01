@@ -1,5 +1,6 @@
 package br.com.zupacademy.natacha.microservicepropostas.error;
 
+import br.com.zupacademy.natacha.microservicepropostas.exceptions.BiometriaException;
 import br.com.zupacademy.natacha.microservicepropostas.exceptions.BusinessException;
 import br.com.zupacademy.natacha.microservicepropostas.exceptions.PropostaNaoEncontradaException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +32,12 @@ public class ErrosDeValidacaoHandler {
         return erroResponse;
     }
 
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(BiometriaException.class)
+    public Map<String, String> HandleBiometriaNaoEncontrada(BusinessException ex){
+        Map<String, String> erroResponse = new HashMap<>();
+        erroResponse.put("mensagem:",ex.getMessage());
+        return erroResponse;
+    }
 }
 

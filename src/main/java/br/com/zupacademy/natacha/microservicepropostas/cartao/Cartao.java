@@ -2,7 +2,9 @@ package br.com.zupacademy.natacha.microservicepropostas.cartao;
 
 import br.com.zupacademy.natacha.microservicepropostas.proposta.NovaProposta;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -22,6 +24,7 @@ public class Cartao {
     @NotNull
     @OneToOne(mappedBy = "cartao")
     private NovaProposta proposta;
+
 
     @Deprecated
     public Cartao() {
