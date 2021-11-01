@@ -3,6 +3,7 @@ services:
 
   app:
     container_name: app
+    restart: always
     build:
       context: ./
     ports:
@@ -15,6 +16,7 @@ services:
       DB_PASSWORD: admin
       ANALISE_URL: http://analise:9999/api/solicitacao
       CONTA_URL: http://contas:8888/api/cartoes
+
 
 
   db:
