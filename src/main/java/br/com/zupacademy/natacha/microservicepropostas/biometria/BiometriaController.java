@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.Base64;
@@ -25,6 +26,7 @@ public class BiometriaController {
     private BiometriaRepository biometriaRepository;
 
     @PostMapping("/inserir")
+    @Transactional
     public ResponseEntity<?> cadastrarBiometria(@RequestParam String numeroCartao,
                                                 @RequestBody @Valid BiometriaRequest request,
                                                 UriComponentsBuilder uriBuilder){

@@ -4,6 +4,8 @@ import br.com.zupacademy.natacha.microservicepropostas.cartao.Cartao;
 import br.com.zupacademy.natacha.microservicepropostas.exceptions.BiometriaException;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Base64;
 
@@ -16,9 +18,12 @@ public class Biometria {
 
     private LocalDateTime dataCriacao = LocalDateTime.now();
 
+    @NotNull
     @ManyToOne
     private Cartao cartao;
 
+
+    @NotBlank
     private String impressaoDigital;
 
     @Deprecated
@@ -26,7 +31,7 @@ public class Biometria {
     }
 
 
-    public Biometria(Cartao cartao, String impressaoDigital) {
+    public Biometria(@NotNull Cartao cartao, @NotBlank String impressaoDigital) {
         this.cartao = cartao;
         this.impressaoDigital = impressaoDigital;
     }

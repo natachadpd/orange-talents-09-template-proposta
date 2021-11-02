@@ -3,15 +3,18 @@ package br.com.zupacademy.natacha.microservicepropostas.biometria;
 import br.com.zupacademy.natacha.microservicepropostas.cartao.Cartao;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.constraints.NotBlank;
+
 public class BiometriaRequest {
 
+    @NotBlank
     @JsonProperty
     private String impressaoDigital;
 
     public BiometriaRequest() {
     }
 
-    public BiometriaRequest(String impressaoDigital) {
+    public BiometriaRequest(@NotBlank String impressaoDigital) {
         this.impressaoDigital = impressaoDigital;
     }
 

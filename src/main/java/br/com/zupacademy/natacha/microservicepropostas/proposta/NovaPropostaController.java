@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.Optional;
@@ -28,6 +29,7 @@ public class NovaPropostaController {
     private AnaliseFinanceiraClient solicitacao;
 
     @PostMapping
+    @Transactional
     public ResponseEntity<NovaProposta> criarProposta(@RequestBody @Valid NovaPropostaRequest request,
                                                       UriComponentsBuilder uriBuilder) {
 
