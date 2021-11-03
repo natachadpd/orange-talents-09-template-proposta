@@ -49,4 +49,12 @@ class AvisoViagem {
         this.ipCliente = ipCliente;
         this.userAgent = userAgent;
     }
+
+    public String getDestino() {
+        return destino;
+    }
+
+    public LocalDate getDataTermino() {
+        return dataTermino;
+    }
 }

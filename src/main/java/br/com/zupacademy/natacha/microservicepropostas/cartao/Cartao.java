@@ -1,5 +1,6 @@
 package br.com.zupacademy.natacha.microservicepropostas.cartao;
 
+import br.com.zupacademy.natacha.microservicepropostas.commons.enums.StatusAvisoViagem;
 import br.com.zupacademy.natacha.microservicepropostas.commons.enums.StatusCartao;
 import br.com.zupacademy.natacha.microservicepropostas.proposta.NovaProposta;
 
@@ -28,6 +29,7 @@ public class Cartao {
     private StatusCartao statusCartao = StatusCartao.DESBLOQUEADO;
 
 
+
     @Deprecated
     public Cartao() {
     }
@@ -51,5 +53,6 @@ public class Cartao {
     public void bloquear(){
         this.statusCartao = StatusCartao.BLOQUEADO;
     }
+
 
 }
