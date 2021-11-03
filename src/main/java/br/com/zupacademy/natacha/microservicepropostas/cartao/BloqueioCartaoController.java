@@ -1,5 +1,7 @@
 package br.com.zupacademy.natacha.microservicepropostas.cartao;
 
+import br.com.zupacademy.natacha.microservicepropostas.cartao.client.SolicitacaoBloqueioCartao;
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +20,12 @@ public class BloqueioCartaoController {
     @Autowired
     private BloqueioCartaoRepository bloqueioRepository;
 
-    @PostMapping("/numeroCartao")
+    @Autowired
+    private SolicitacaoBloqueioCartao solicitacaoBloqueio;
+
+    @PostMapping("/numeroCartao/{numeroCartao}/bloqueios")
     @Transactional
-    public void bloquearCartao(@RequestParam String numeroCartao,
+    public void bloquearCartao(@PathVariable String numeroCartao,
                                @RequestHeader(value = "User-Agent") String userAgent,
                                HttpServletRequest request) {
         Cartao cartao = cartaoRepository.findById(numeroCartao)
@@ -31,8 +36,26 @@ public class BloqueioCartaoController {
         }
 
         BloqueioCartao bloqueioCartao = new BloqueioCartao(userAgent, request.getRemoteAddr(), cartao);
-        bloqueioRepository.save(bloqueioCartao);
+        cartaoBloquear(cartao, bloqueioCartao);
 
+    }
+
+
+    private void cartaoBloquear(Cartao cartao, BloqueioCartao bloqueioCartao) {
+
+        try{
+            solicitacaoBloqueio.bloquearCartao(cartao.getNumeroCartao(),
+                    new SolicitacaoBloqueioRequest("Sistema"));
+            cartao.bloquear();
+            cartaoRepository.save(cartao);
+            bloqueioRepository.save(bloqueioCartao); }
+        catch (FeignException.UnprocessableEntity feignException) {
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        catch (FeignException ex) {
+            System.out.println(ex.getMessage());
+            ex.getMessage();
+        }
     }
 
 }

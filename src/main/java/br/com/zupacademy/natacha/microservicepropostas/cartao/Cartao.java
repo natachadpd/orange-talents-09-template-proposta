@@ -1,10 +1,9 @@
 package br.com.zupacademy.natacha.microservicepropostas.cartao;
 
+import br.com.zupacademy.natacha.microservicepropostas.commons.validator.enums.StatusCartao;
 import br.com.zupacademy.natacha.microservicepropostas.proposta.NovaProposta;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -25,6 +24,9 @@ public class Cartao {
     @OneToOne(mappedBy = "cartao")
     private NovaProposta proposta;
 
+    @Enumerated(EnumType.STRING)
+    private StatusCartao statusCartao = StatusCartao.DESBLOQUEADO;
+
 
     @Deprecated
     public Cartao() {
@@ -37,10 +39,17 @@ public class Cartao {
         this.titular = titular;
         this.emitidoEm = emitidoEm;
         this.proposta = proposta;
+        this.statusCartao = StatusCartao.DESBLOQUEADO;
     }
 
 
     public String getNumeroCartao() {
         return numeroCartao;
     }
+
+
+    public void bloquear(){
+        this.statusCartao = StatusCartao.BLOQUEADO;
+    }
+
 }
