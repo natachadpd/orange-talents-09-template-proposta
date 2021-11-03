@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.configurers.oauth2.ser
 
 @Configuration
 @EnableWebSecurity
-public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
+public class ConfiguracoesSeguranca extends WebSecurityConfigurerAdapter {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
@@ -19,6 +19,7 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
                             .antMatchers(HttpMethod.POST,"/propostas/**").hasAuthority("SCOPE_escopo-proposta")
                             .antMatchers(HttpMethod.POST, "/biometria/**").hasAuthority("SCOPE_escopo-proposta")
                             .antMatchers(HttpMethod.POST, "/cartoes/**").hasAuthority("SCOPE_escopo-proposta")
+                            .antMatchers(HttpMethod.POST, "/actuator/**").hasAuthority("SCOPE_escopo-proposta")
                             .anyRequest().authenticated()
             ).oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
         }
