@@ -1,6 +1,6 @@
 package br.com.zupacademy.natacha.microservicepropostas.cartao;
 
-import br.com.zupacademy.natacha.microservicepropostas.commons.validator.enums.StatusCartao;
+import br.com.zupacademy.natacha.microservicepropostas.commons.enums.StatusCartao;
 import br.com.zupacademy.natacha.microservicepropostas.proposta.NovaProposta;
 
 import javax.persistence.*;

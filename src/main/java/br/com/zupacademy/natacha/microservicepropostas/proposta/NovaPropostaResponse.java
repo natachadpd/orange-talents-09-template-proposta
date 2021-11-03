@@ -1,6 +1,6 @@
 package br.com.zupacademy.natacha.microservicepropostas.proposta;
 
-import br.com.zupacademy.natacha.microservicepropostas.commons.validator.enums.StatusProposta;
+import br.com.zupacademy.natacha.microservicepropostas.commons.enums.StatusProposta;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
