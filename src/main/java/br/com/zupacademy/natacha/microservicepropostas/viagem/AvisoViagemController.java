@@ -2,7 +2,7 @@ package br.com.zupacademy.natacha.microservicepropostas.viagem;
 
 import br.com.zupacademy.natacha.microservicepropostas.cartao.Cartao;
 import br.com.zupacademy.natacha.microservicepropostas.cartao.CartaoRepository;
-import br.com.zupacademy.natacha.microservicepropostas.cartao.client.AvisoViagemClient;
+import br.com.zupacademy.natacha.microservicepropostas.commons.client.AvisoViagemClient;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

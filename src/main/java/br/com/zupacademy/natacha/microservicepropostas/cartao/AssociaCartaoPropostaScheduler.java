@@ -1,6 +1,6 @@
 package br.com.zupacademy.natacha.microservicepropostas.cartao;
 
-import br.com.zupacademy.natacha.microservicepropostas.cartao.client.CartaoClient;
+import br.com.zupacademy.natacha.microservicepropostas.commons.client.CartaoClient;
 import br.com.zupacademy.natacha.microservicepropostas.proposta.NovaProposta;
 import br.com.zupacademy.natacha.microservicepropostas.proposta.NovaPropostaRepository;
 import feign.FeignException;

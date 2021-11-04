@@ -1,6 +1,6 @@
 package br.com.zupacademy.natacha.microservicepropostas.cartao;
 
-import br.com.zupacademy.natacha.microservicepropostas.cartao.client.SolicitacaoBloqueioCartao;
+import br.com.zupacademy.natacha.microservicepropostas.commons.client.SolicitacaoBloqueioCartao;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

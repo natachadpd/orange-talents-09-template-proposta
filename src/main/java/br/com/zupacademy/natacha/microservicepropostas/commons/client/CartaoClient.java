@@ -1,4 +1,4 @@
-package br.com.zupacademy.natacha.microservicepropostas.cartao.client;
+package br.com.zupacademy.natacha.microservicepropostas.commons.client;
 
 import br.com.zupacademy.natacha.microservicepropostas.cartao.CartaoResponse;
 import org.springframework.cloud.openfeign.FeignClient;
