@@ -1,9 +1,12 @@
 package br.com.zupacademy.natacha.microservicepropostas.carteira;
 
+import br.com.zupacademy.natacha.microservicepropostas.MicroservicePropostasApplication;
 import br.com.zupacademy.natacha.microservicepropostas.cartao.Cartao;
 import br.com.zupacademy.natacha.microservicepropostas.cartao.CartaoRepository;
 import br.com.zupacademy.natacha.microservicepropostas.commons.client.CarteiraDigitalClient;
 import feign.FeignException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,9 @@ import java.net.URI;
 @RestController
 @RequestMapping("/cartoes")
 public class CarteiraDigitalController {
+
+    private static Logger logger = LoggerFactory.getLogger(MicroservicePropostasApplication.class);
+
 
     @Autowired
     private CarteiraDigitalRepository carteiraRepository;
@@ -34,10 +40,13 @@ public class CarteiraDigitalController {
     public ResponseEntity<?> associar(@PathVariable String numeroCartao,
                                       @RequestBody @Valid CarteiraDigitalRequest request,
                                       UriComponentsBuilder uriBuilder) {
+        logger.info("Número do cartão informado " + numeroCartao);
+
 
         Cartao cartao = cartaoRepository.findById(numeroCartao)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Cartão não encontrado"));
+        logger.info("Cartão não existe na base de dados");
 
         CarteiraDigital carteira = request.toModel(cartao);
 
@@ -46,9 +55,11 @@ public class CarteiraDigitalController {
             throw new ResponseStatusException(HttpStatus
                     .UNPROCESSABLE_ENTITY, "Cartão já cadastrado para esta carteira.");
         }
+        logger.info("Cartão já existe na base de dados com esta carteira");
 
         vincularCarteiraDigital(numeroCartao, carteira);
 
+        logger.info("Requisição salva no banco.");
 
         URI uri = uriBuilder.path("cartoes/{numeroCartao}/carteiras/{id}")
                 .buildAndExpand(cartao.getNumeroCartao(), carteira.getId()).toUri();
