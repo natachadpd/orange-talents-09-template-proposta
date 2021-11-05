@@ -15,12 +15,13 @@ public class ConfiguracoesSeguranca extends WebSecurityConfigurerAdapter {
         protected void configure(HttpSecurity http) throws Exception {
             http.authorizeRequests(authorizeRequests ->
                     authorizeRequests
+                            .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                             .antMatchers(HttpMethod.GET,"/propostas/**").hasAuthority("SCOPE_escopo-proposta")
                             .antMatchers(HttpMethod.POST,"/propostas/**").hasAuthority("SCOPE_escopo-proposta")
                             .antMatchers(HttpMethod.POST, "/biometria/**").hasAuthority("SCOPE_escopo-proposta")
                             .antMatchers(HttpMethod.POST, "/cartoes/**").hasAuthority("SCOPE_escopo-proposta")
                             .antMatchers(HttpMethod.POST, "/viagens/**").hasAuthority("SCOPE_escopo-proposta")
-                            .antMatchers(HttpMethod.POST, "/actuator/**").hasAuthority("SCOPE_escopo-proposta")
+//                            .antMatchers(HttpMethod.POST, "/actuator/**").hasAuthority("SCOPE_escopo-proposta")
                             .anyRequest().authenticated()
             ).oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
         }
