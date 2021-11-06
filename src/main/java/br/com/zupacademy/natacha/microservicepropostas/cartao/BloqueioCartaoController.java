@@ -1,7 +1,10 @@
 package br.com.zupacademy.natacha.microservicepropostas.cartao;
 
+import br.com.zupacademy.natacha.microservicepropostas.biometria.BiometriaController;
 import br.com.zupacademy.natacha.microservicepropostas.commons.client.SolicitacaoBloqueioCartao;
 import feign.FeignException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +16,7 @@ import javax.transaction.Transactional;
 @RestController
 @RequestMapping("/cartoes")
 public class BloqueioCartaoController {
+
 
     @Autowired
     private CartaoRepository cartaoRepository;
@@ -28,8 +32,10 @@ public class BloqueioCartaoController {
     public void bloquearCartao(@PathVariable String numeroCartao,
                                @RequestHeader(value = "User-Agent") String userAgent,
                                HttpServletRequest request) {
+
+
         Cartao cartao = cartaoRepository.findById(numeroCartao)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Cartão não encontrado."));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cartão não encontrado."));
 
         if (bloqueioRepository.existsByCartaoNumeroCartao(numeroCartao)) {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Cartão já bloqueado");
@@ -43,16 +49,15 @@ public class BloqueioCartaoController {
 
     private void cartaoBloquear(Cartao cartao, BloqueioCartao bloqueioCartao) {
 
-        try{
+        try {
             solicitacaoBloqueio.bloquearCartao(cartao.getNumeroCartao(),
-                    new SolicitacaoBloqueioRequest("Sistema"));
+                    new SolicitacaoBloqueioRequest("proposta"));
             cartao.bloquear();
             cartaoRepository.save(cartao);
-            bloqueioRepository.save(bloqueioCartao); }
-        catch (FeignException.UnprocessableEntity feignException) {
+            bloqueioRepository.save(bloqueioCartao);
+        } catch (FeignException.UnprocessableEntity feignException) {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-        catch (FeignException ex) {
+        } catch (FeignException ex) {
             System.out.println(ex.getMessage());
             ex.getMessage();
         }

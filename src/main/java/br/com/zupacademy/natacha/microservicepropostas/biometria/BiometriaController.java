@@ -2,8 +2,11 @@ package br.com.zupacademy.natacha.microservicepropostas.biometria;
 
 import br.com.zupacademy.natacha.microservicepropostas.cartao.Cartao;
 import br.com.zupacademy.natacha.microservicepropostas.cartao.CartaoRepository;
+import br.com.zupacademy.natacha.microservicepropostas.carteira.CarteiraDigitalController;
 import br.com.zupacademy.natacha.microservicepropostas.exceptions.BiometriaException;
 import br.com.zupacademy.natacha.microservicepropostas.exceptions.CartaoNaoEncontradoException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +22,7 @@ import java.util.Optional;
 @RequestMapping("/biometrias")
 public class BiometriaController {
 
+
     @Autowired
     private CartaoRepository cartaoRepository;
 
@@ -29,7 +33,7 @@ public class BiometriaController {
     @Transactional
     public ResponseEntity<?> cadastrarBiometria(@RequestParam String numeroCartao,
                                                 @RequestBody @Valid BiometriaRequest request,
-                                                UriComponentsBuilder uriBuilder){
+                                                UriComponentsBuilder uriBuilder) {
         Cartao cartao = cartaoRepository.findById(numeroCartao)
                 .orElseThrow(CartaoNaoEncontradoException::new);
 

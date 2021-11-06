@@ -2,6 +2,7 @@ package br.com.zupacademy.natacha.microservicepropostas.proposta;
 
 import br.com.zupacademy.natacha.microservicepropostas.cartao.Cartao;
 import br.com.zupacademy.natacha.microservicepropostas.commons.enums.StatusProposta;
+import br.com.zupacademy.natacha.microservicepropostas.security.CriptografiaDados;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -17,6 +18,7 @@ public class NovaProposta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Convert(converter = CriptografiaDados.class)
     @NotBlank
     private String documento;
 

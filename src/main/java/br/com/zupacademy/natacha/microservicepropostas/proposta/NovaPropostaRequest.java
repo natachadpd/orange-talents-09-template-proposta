@@ -1,8 +1,10 @@
 package br.com.zupacademy.natacha.microservicepropostas.proposta;
 
+import br.com.zupacademy.natacha.microservicepropostas.security.CriptografiaDados;
 import br.com.zupacademy.natacha.microservicepropostas.commons.validator.DocumentoValidator;
 import org.hibernate.validator.constraints.Length;
 
+import javax.persistence.Convert;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -13,6 +15,7 @@ public class NovaPropostaRequest {
 
     @NotBlank
     @DocumentoValidator(domainClass = NovaProposta.class, fieldName = "documento")
+    @Convert(converter = CriptografiaDados.class)
     @Length(min = 11, max = 18)
     private String documento;
 

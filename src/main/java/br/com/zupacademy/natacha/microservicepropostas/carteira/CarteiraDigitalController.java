@@ -22,7 +22,6 @@ import java.net.URI;
 @RequestMapping("/cartoes")
 public class CarteiraDigitalController {
 
-    private static Logger logger = LoggerFactory.getLogger(MicroservicePropostasApplication.class);
 
 
     @Autowired
@@ -40,13 +39,11 @@ public class CarteiraDigitalController {
     public ResponseEntity<?> associar(@PathVariable String numeroCartao,
                                       @RequestBody @Valid CarteiraDigitalRequest request,
                                       UriComponentsBuilder uriBuilder) {
-        logger.info("Número do cartão informado " + numeroCartao);
 
 
         Cartao cartao = cartaoRepository.findById(numeroCartao)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Cartão não encontrado"));
-        logger.info("Cartão não existe na base de dados");
 
         CarteiraDigital carteira = request.toModel(cartao);
 
@@ -55,11 +52,9 @@ public class CarteiraDigitalController {
             throw new ResponseStatusException(HttpStatus
                     .UNPROCESSABLE_ENTITY, "Cartão já cadastrado para esta carteira.");
         }
-        logger.info("Cartão já existe na base de dados com esta carteira");
 
         vincularCarteiraDigital(numeroCartao, carteira);
 
-        logger.info("Requisição salva no banco.");
 
         URI uri = uriBuilder.path("cartoes/{numeroCartao}/carteiras/{id}")
                 .buildAndExpand(cartao.getNumeroCartao(), carteira.getId()).toUri();

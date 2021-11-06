@@ -1,10 +1,13 @@
 package br.com.zupacademy.natacha.microservicepropostas.proposta;
 
+import br.com.zupacademy.natacha.microservicepropostas.cartao.BloqueioCartaoController;
 import br.com.zupacademy.natacha.microservicepropostas.exceptions.PropostaNaoEncontradaException;
 import br.com.zupacademy.natacha.microservicepropostas.proposta.analise.AnaliseFinanceiraClient;
 import br.com.zupacademy.natacha.microservicepropostas.proposta.analise.ResultadoAnaliseResponse;
 import br.com.zupacademy.natacha.microservicepropostas.proposta.analise.SolicitacaoAnaliseRequest;
 import feign.FeignException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +24,7 @@ import java.util.Optional;
 @RequestMapping("/propostas")
 public class NovaPropostaController {
 
+    private static Logger logger = LoggerFactory.getLogger(NovaPropostaController.class);
 
     @Autowired
     private NovaPropostaRepository repository;
@@ -60,8 +64,7 @@ public class NovaPropostaController {
 
         } catch (FeignException.UnprocessableEntity feignException) {
             proposta.adicionaStatus("COM_RESTRICAO");
-        }
-        catch (FeignException ex) {
+        } catch (FeignException ex) {
             System.out.println(ex.getMessage());
             ex.getMessage();
         }
@@ -69,6 +72,8 @@ public class NovaPropostaController {
 
     @GetMapping("/pesquisar/{id}")
     public NovaPropostaResponse acompanharProposta(@PathVariable long id) {
+
+        logger.info("Consulta do cartão com id " + id);
         NovaProposta proposta = repository.findById(id)
                 .orElseThrow(PropostaNaoEncontradaException::new);
 
