@@ -61,7 +61,6 @@ class NovaPropostaControllerTest {
     @ParameterizedTest
     @NullAndEmptySource
     void testeProposta3(String endereco) throws Exception {
-        URI uri = new URI("/propostas");
         NovaPropostaRequest request = new NovaPropostaRequest("596.659.570-40",
                 "grace.hopper@email.com",
                 "Grace Hopper",
@@ -84,7 +83,6 @@ class NovaPropostaControllerTest {
     @ParameterizedTest
     @NullAndEmptySource
     void testeProposta4(String documento) throws Exception {
-        URI uri = new URI("/propostas");
         NovaPropostaRequest request = new NovaPropostaRequest(documento,
                 "grace.hopper@email.com",
                 "Grace Hopper",
@@ -106,7 +104,6 @@ class NovaPropostaControllerTest {
     @Test
     @DisplayName("Retorna erro ao tentar cadastrar proposta com documento já existente")
     void testeProposta5() throws Exception {
-        URI uri = new URI("/propostas");
         NovaPropostaRequest request = new NovaPropostaRequest("596.659.570-40",
                 "grace.hopper@email.com",
                 "Grace Hopper",
